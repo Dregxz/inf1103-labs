@@ -1,22 +1,28 @@
 inventory = 0
-order = str 
+stock = str 
 error = 0
 
 def get_valid_input(inv):
     if inv.isdigit() or inv == ("quit"):
         return inv
 
-def process_delivery(current_total, new_total):
-    if current_total.isdigit():
-        return new_total+int(current_total)
+def process_delivery(current_total, new_value):
+    if new_value.isdigit():
+        return current_total+int(new_value)
     else :
-        return new_total
+        return current_total
 
+def calculate_tax(amount):
+    amount=amount*3 #delivery amount
+    return amount*0.1
 
-while order != ("quit"):
-    order = (input("Enter value: "))
-    get_valid_input(order)
-    inventory = process_delivery(order, inventory)
+while stock != ("quit"):
+    stock = (input("Enter value: "))
+    get_valid_input(stock)
+    inventory = process_delivery(inventory, stock)
+    if stock.isdigit():
+        tax=+calculate_tax(int(stock))
+        print("$",round(tax, 3))
 
 print("Total Unit Processed: ", inventory)
 print("Rejected Entry: ", error) 
