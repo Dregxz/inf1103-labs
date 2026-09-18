@@ -16,6 +16,10 @@ def calculate_tax(amount):
     amount=amount*3 #delivery amount
     return amount*0.1
 
+def generate_report(total_unit, failed_attempt):
+    print("Total Unit Processed: ", total_unit)
+    print("Rejected Entry: ", failed_attempt) 
+
 while stock != ("quit"):
     stock = (input("Enter value: "))
     get_valid_input(stock)
@@ -24,5 +28,7 @@ while stock != ("quit"):
         tax=+calculate_tax(int(stock))
         print("$",round(tax, 3))
 
-print("Total Unit Processed: ", inventory)
-print("Rejected Entry: ", error) 
+    elif stock != ("quit"):
+        error=+1
+        
+generate_report(inventory, error)
