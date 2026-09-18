@@ -1,6 +1,7 @@
 inventory = 0
 stock = str 
 error = 0
+totaltax=0
 
 def get_valid_input(inv):
     if inv.isdigit() or inv == ("quit"):
@@ -16,9 +17,10 @@ def calculate_tax(amount):
     amount=amount*3 #delivery amount
     return amount*0.1
 
-def generate_report(total_unit, failed_attempt):
+def generate_report(total_unit, failed_attempt, taxes):
     print("Total Unit Processed: ", total_unit)
     print("Rejected Entry: ", failed_attempt) 
+    print("Total Tax: $", round(taxes,3))
 
 while stock != ("quit"):
     stock = (input("Enter value: "))
@@ -27,8 +29,9 @@ while stock != ("quit"):
     if stock.isdigit():
         tax=+calculate_tax(int(stock))
         print("$",round(tax, 3))
+        totaltax+=tax
 
     elif stock != ("quit"):
         error=+1
-        
-generate_report(inventory, error)
+
+generate_report(inventory, error, totaltax)
