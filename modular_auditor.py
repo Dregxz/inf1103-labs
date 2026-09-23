@@ -32,6 +32,6 @@ while stock != ("quit"):
         totaltax+=tax
 
     elif stock != ("quit"):
-        error=+1
+        error+=1
 
 generate_report(inventory, error, totaltax)
