@@ -32,6 +32,7 @@ while stock != ("quit"):
         totaltax+=tax
 
     elif stock != ("quit"):
+        print("Rejected!")
         error+=1
 
 generate_report(inventory, error, totaltax)
