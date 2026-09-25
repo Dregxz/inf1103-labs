@@ -1,6 +1,6 @@
 inventory = 0
 items = ["Wireless Mouse","Keyboard","USB Cable","Laptop Stand"]
-codes = ["1001","1002","1003","1004"]
+codes = ["1001","1002","1003","1004"] #if it is an Item Code
 ordered_items = dict(zip(items, codes))
 stock = str 
 product = str
@@ -33,13 +33,10 @@ def load_inventory():
     with open("inventory.txt", "r") as file:
         return file.read().splitlines()
 
-
 def save_inventory(orders):
     with open("inventory.txt", "w") as file:
         for item in orders:
             file.write(f"{item}\n")
-
-
 
 while stock != ("quit") or product!=(quit):
     current_orders=load_inventory()
@@ -51,7 +48,12 @@ while stock != ("quit") or product!=(quit):
         get_valid_input(stock)
 
         if stock.isdigit():
-            added_items=({v for k, v in ordered_items.items() if product in k}, product, stock)
+            added_items=ordered_items.get(product)+ ", " + product + ", " + stock
+            print("\nNew Order Added:")
+            current_orders.append(added_items)
+            save_inventory(current_orders)
+            print(added_items, "\n\nOrder Sucessfully saved to Order.txt")
+            break
 
     elif product == ("quit"):
         break
@@ -59,13 +61,8 @@ while stock != ("quit") or product!=(quit):
     else:
         print("Rejected!")
         error+=1
-
-
-    
-    current_orders.append(added_items)
-    save_inventory(current_orders)
-
     
 
-generate_report(inventory, error)
-#writing into file works
+
+#generate_report(inventory, error)
+
