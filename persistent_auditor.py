@@ -1,12 +1,15 @@
 inventory = 0
 items = ["Wireless Mouse","Keyboard","USB Cable","Laptop Stand"]
+codes = ["1001","1002","1003","1004"]
+ordered_items = dict(zip(items, codes))
 stock = str 
 product = str
 error = 0
-totaltax=0
 current_orders = list
+added_items = str
 
 def get_valid_input(inv):
+    global items
     if inv.isdigit() or inv == ("quit") or inv in items:
         return inv
 
@@ -36,23 +39,33 @@ def save_inventory(orders):
         for item in orders:
             file.write(f"{item}\n")
 
-current_orders=load_inventory()
-#current_orders.append("1")
-save_inventory(current_orders)
-while stock != ("quit"):
+
+
+while stock != ("quit") or product!=(quit):
+    current_orders=load_inventory()
     product = (input("Enter Product Name: "))
     get_valid_input(product)
-    stock = (input("Enter Quantity: "))
-    get_valid_input(stock)
 
-    inventory = process_delivery(inventory, stock)
-    if stock.isdigit():
-        tax=+calculate_tax(int(stock))
-        print("$",round(tax, 3))
-        totaltax+=tax
+    if product != ("quit") and product in items:
+        stock = (input("Enter Quantity: "))
+        get_valid_input(stock)
 
-    elif stock != ("quit"):
+        if stock.isdigit():
+            added_items=({v for k, v in ordered_items.items() if product in k}, product, stock)
+
+    elif product == ("quit"):
+        break
+    
+    else:
         print("Rejected!")
         error+=1
 
+
+    
+    current_orders.append(added_items)
+    save_inventory(current_orders)
+
+    
+
 generate_report(inventory, error)
+#writing into file works
