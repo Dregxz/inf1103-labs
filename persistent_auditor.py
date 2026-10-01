@@ -38,12 +38,12 @@ def save_inventory(orders):
         for item in orders:
             file.write(f"{item}\n")
 
-while stock != ("quit") or product!=(quit):
+while stock != ("quit") or product != ("quit"):
     current_orders=load_inventory()
     product = (input("Enter Product Name: "))
     get_valid_input(product)
 
-    if product != ("quit") and product in items:
+    if product in items:
         stock = (input("Enter Quantity: "))
         get_valid_input(stock)
 
@@ -55,14 +55,13 @@ while stock != ("quit") or product!=(quit):
             print(added_items, "\n\nOrder Sucessfully saved to Order.txt")
             break
 
-    elif product == ("quit"):
+    elif stock != ("quit") or product != ("quit"):
         break
     
     else:
         print("Rejected!")
         error+=1
     
-
 
 #generate_report(inventory, error)
 
