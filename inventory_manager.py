@@ -82,10 +82,16 @@ def search_product(datain):
 def display_all():
 
     with open(Menufile, "r") as file:
+        products=json.load(file)
+        for pid, details in products.items():
+            name = details["Name"]
+            price = float(details["Price"])
+            stk = details["Stock"]
 
-        data = json.load(file)
-        for key, value in data.items():
-            print(f"{key.capitalize()}: {value}")
+            print("Current Inventory")
+            print_line()
+            print(f"ID: {pid:} | Name: {name:} | Price: ${price:.2f} | Stock: {stk:}")
+            print_line()
 
 
 print("--------MENU--------")
