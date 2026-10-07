@@ -37,57 +37,80 @@ def save_inventory(orders):
         for item in orders:
             file.write(f"{item}\n")
 
-def add_product():
-    print("Add New Product")
+def user_input():
     ID = input("Product ID: ")
-    get_valid_input(ID)
     productName = input("Product Name: ")
     price = input("Price: ")
     get_valid_input(price)
     if isinstance(price, float) or price.isdigit:
         stock = input("Stock Quantity: ")
+        print("\n")
         get_valid_input(stock)
         if stock.isdigit():
-            inventory_dict = {"Name" : productName,
-                              "Price": price,
-                              "Stock": stock
-                              }
-            try:
-                with open("inventory.json", "r") as file:
-                    datalist=json.load(file)
-            except (FileNotFoundError, json.JSONDecodeError):
-                    datalist={"": []}
+            dataout = {"Name" : productName,
+                        "Price": price,                               
+                        "Stock": stock
+                        }
+            return ID, dataout
+        
+def add_product(IDin, datain):
+    if IDin != 0:
+        try:
+            with open("inventory.json", "r") as file:
+                datalist=json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+                datalist={"": []}
             
-            if "" in datalist:
-                del datalist[""]
-                
-            datalist[ID] = inventory_dict
-            
-            with open("inventory.json", "w") as file:
-                json.dump(datalist, file, indent=4)
+        if "" in datalist:
+            del datalist[""]
+
+        elif IDin in datalist:
+            update_stock()
+        
+        datalist[IDin] = datain           
+        with open("inventory.json", "w") as file:
+            json.dump(datalist, file, indent=4)
 
     else:
         print("Rejected!")
 
 
+def update_stock(IDin, datain):
+    try:
+        with open("inventory.json", "r") as file:
+            datalist=json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        datalist={"": []}
+    
+    if IDin in datalist:
+        datalist[IDin]["Name"] = datain["Name"]
+        datalist[IDin]["Price"] = datain["Price"]
+        datalist[IDin]["Stock"] = datain["Stock"]        
+        with open("inventory.json", "w") as file:
+            json.dump(datalist, file, indent=4)
 
-def update_stock(datain, dataout):
-    with open(Menufile, "r") as file:
-        print()
+    else:
+        print("Item not found")
 
 def search_product(datain):
     with open(Menufile, "r") as file:
         print()
 
 def display_all():
+    try:
+        with open("inventory.json", "r") as file:
+            datalist=json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        datalist={"": []}
+        
+    if "" in datalist:
+        print("No Entry\n")
 
-    with open(Menufile, "r") as file:
-        products=json.load(file)
-        for pid, details in products.items():
+    else:        
+        for pid, details in datalist.items():
             name = details["Name"]
             price = float(details["Price"])
             stk = details["Stock"]
-
             print("Current Inventory")
             print_line()
             print(f"ID: {pid:} | Name: {name:} | Price: ${price:.2f} | Stock: {stk:}")
@@ -109,8 +132,15 @@ while option != "6":
     print("\n")
 
     if option == "1":
-        print_line()
         display_all()
 
     elif option == "2":
-        add_product()
+        
+        print("Add New Product")
+        ID,data=user_input()
+        add_product(ID, data)
+
+    elif option == "3":
+        print("Update Product")
+        ID,data=user_input()
+        update_stock(ID,data)
