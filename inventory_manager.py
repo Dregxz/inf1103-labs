@@ -73,7 +73,7 @@ def update_stock():
     if IDin in datalist:
         print("Product Found")
         name = datalist[IDin]["Name"]
-        price = float(datalist[IDin]["Name"])
+        price = float(datalist[IDin]["Price"])
         print("Name: ", name)
         print("Price: ", price, "\n")
         datalist[IDin]["Stock"] = input("New Stock Quantity: ")
