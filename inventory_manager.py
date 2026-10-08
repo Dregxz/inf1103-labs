@@ -45,7 +45,6 @@ def user_input():
     get_valid_input(price)
     if isinstance(price, float) or price.isdigit:
         stock = input("Stock Quantity: ")
-        print("\n")
         get_valid_input(stock)
         if stock.isdigit():
             dataout = {"Name" : productName,
@@ -59,10 +58,10 @@ def add_product(IDin, datain):
         if "" in datalist:
             del datalist[""]
 
-        elif IDin in datalist:
-            print("Item in list")
-        
-        datalist[IDin] = datain  
+        else:
+            datalist[IDin] = datain
+            print(datalist)
+            
         return datalist         
 
     else:
@@ -115,12 +114,12 @@ def display_all():
 print_line2()
 print("INVENTORY MANAGEMENT SYSTEM")
 print_line2()
+print("\n")
 
 try:
     with open("inventory.json", "r") as file:
         print("inventory.json found.")
         datalist=json.load(file)
-        print("inventory loaded successfully.")
 except (FileNotFoundError, json.JSONDecodeError):
     datalist={"": []}
 
@@ -132,13 +131,11 @@ print("3. Update Stock")
 print("4. Search Product")
 print("5. Save Inventory")
 print("6. Exit")
-print("----------------------")
-print("\n")
+print("---------------------")
 
 while option != "6":
-    option = input("Enter option: ")
+    option = input("\nEnter option: ")
     get_valid_input(option)
-    print("\n")
 
     if option == "1":
         print("Current Inventory")
@@ -152,7 +149,7 @@ while option != "6":
         print("Add New Product\n")
         ID,data=user_input()
         datalist = add_product(ID, data)
-        print("\n")
+        print("\nProduct added Successfully!\n")
         
     elif option == "3":
         print("Update Product\n")
