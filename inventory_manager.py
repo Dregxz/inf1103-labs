@@ -60,7 +60,6 @@ def add_product(IDin, datain):
 
         else:
             datalist[IDin] = datain
-            print(datalist)
             
         return datalist         
 
