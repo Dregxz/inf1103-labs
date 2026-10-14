@@ -250,6 +250,7 @@ def normalise_setup(raw, fallback=None):
             "language": language if language in LANGUAGES else base_party["language"],
         }
     return {"meeting": clean_label(raw.get("meeting"), base["meeting"], MAX_MEETING_CHARS), "parties": parties}
+<<<<<<< HEAD
 
 
 def other_party(party_id):
@@ -508,3 +509,5 @@ def records_to_text(records, tz_name=None):
             record.get("transcript", ""), record.get("translation", ""), record.get("tone", "?"),
             record.get("outcome", "?")))
     return "\n\n".join(blocks) + ("\n" if blocks else "")
+=======
+>>>>>>> 2fe9454 (io: add normalise_setup that validates names and languages)
