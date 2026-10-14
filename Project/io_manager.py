@@ -265,6 +265,9 @@ def now_iso():
     """The current time in UTC as ISO 8601 text, to the second."""
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 93d33c7 (io: add make_utterance_id so repeated sentences stay distinct)
 
 
 def make_utterance_id(meeting, timestamp, position, speaker, transcript):
@@ -272,6 +275,7 @@ def make_utterance_id(meeting, timestamp, position, speaker, transcript):
     never duplicates it. `position` (a line number) tells apart repeated sentences."""
     key = "|".join([meeting, timestamp, str(position), speaker, transcript])
     return hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
+<<<<<<< HEAD
 
 
 def make_utterance(setup, speaker, transcript, timestamp=None, input_type="text", position=""):
@@ -517,3 +521,5 @@ def records_to_text(records, tz_name=None):
 >>>>>>> 2fe9454 (io: add normalise_setup that validates names and languages)
 =======
 >>>>>>> 299f9bd (io: add other_party and now_iso helpers)
+=======
+>>>>>>> 93d33c7 (io: add make_utterance_id so repeated sentences stay distinct)
