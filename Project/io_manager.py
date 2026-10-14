@@ -251,6 +251,9 @@ def normalise_setup(raw, fallback=None):
         }
     return {"meeting": clean_label(raw.get("meeting"), base["meeting"], MAX_MEETING_CHARS), "parties": parties}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 299f9bd (io: add other_party and now_iso helpers)
 
 
 def other_party(party_id):
@@ -261,6 +264,7 @@ def other_party(party_id):
 def now_iso():
     """The current time in UTC as ISO 8601 text, to the second."""
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
+<<<<<<< HEAD
 
 
 def make_utterance_id(meeting, timestamp, position, speaker, transcript):
@@ -511,3 +515,5 @@ def records_to_text(records, tz_name=None):
     return "\n\n".join(blocks) + ("\n" if blocks else "")
 =======
 >>>>>>> 2fe9454 (io: add normalise_setup that validates names and languages)
+=======
+>>>>>>> 299f9bd (io: add other_party and now_iso helpers)
