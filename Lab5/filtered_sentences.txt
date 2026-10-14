@@ -1,0 +1,5 @@
+[2026-10-14 19:04:21] Party B (Indonesian) -> Party A (English)
+  Said: diamlu
+  Translation: Shut up.
+  Tone: angry
+  Flag: TENSION

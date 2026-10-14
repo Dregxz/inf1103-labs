@@ -1,0 +1,27 @@
+[
+  {
+    "detected_language": "English",
+    "id": "b010545c058a",
+    "input_type": "text",
+    "intensity": 1,
+    "language_confidence": 1.0,
+    "listener_name": "Party B",
+    "meeting": "meeting-2026-10-14",
+    "outcome": "ACCEPT",
+    "reasons": [
+      "clear and routine"
+    ],
+    "seq": 1,
+    "speaker": "A",
+    "speaker_language": "English",
+    "speaker_name": "Party A",
+    "target_language": "Indonesian",
+    "timestamp": "2026-10-14T05:11:09+00:00",
+    "tone": "neutral",
+    "tone_confidence": 0.9,
+    "tone_reason": "Pembicara hanya menyatakan kebutuhan fisik secara langsung tanpa emosi yang kuat.",
+    "transcript": "I am hungry do you want to grab a meal",
+    "translation": "Saya lapar, apakah Anda ingin pergi makan?",
+    "translation_confidence": 1.0
+  }
+]

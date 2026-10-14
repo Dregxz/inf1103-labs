@@ -20,14 +20,14 @@ from zoneinfo import ZoneInfo
 INPUT_DIR = os.environ.get("INPUT_DIR", "input")
 LANGUAGES = ["English", "Indonesian", "Chinese"]
 DETECTED_LANGUAGES = LANGUAGES + ["Other"]  # what the AI can report the speaker used
-LANGUAGE_TO_SPEECH_CODE = {"English": "en-US", "Indonesian": "id-ID", "Chinese": "zh-CN"}
+LANGUAGE_TO_SPEECH_CODE = {"English": "en-US", "Indonesian": "id-ID", "Chinese": "zh-Hans-CN"}
 PARTY_IDS = ["A", "B"]
 MAX_SENTENCE_CHARS = 2000
 MAX_NAME_CHARS = 40
 MAX_MEETING_CHARS = 60
 MAX_AUDIO_BYTES = 25 * 1024 * 1024  # largest recording we will transcribe
 WHISPER_MODEL_NAME = os.environ.get("WHISPER_MODEL", "base")  # tiny/base/small/medium: bigger = more accurate, slower
-WHISPER_TO_SPEECH_CODE = {"en": "en-US", "zh": "zh-CN", "id": "id-ID"}
+WHISPER_TO_SPEECH_CODE = {"en": "en-US", "zh": "zh-Hans-CN", "id": "id-ID"}
 SPEECH_CODE_TO_WHISPER = {code: short for short, code in WHISPER_TO_SPEECH_CODE.items()}
 RECORDER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "web", "recorder.html")
 
@@ -437,7 +437,7 @@ def run_transcription(model, audio_bytes, language):
 def transcribe_audio(audio_bytes, speech_code=None):
     """Turn a recording into text.
 
-    speech_code is 'en-US', 'zh-CN', 'id-ID' or None for auto-detect (restricted to those three).
+    speech_code is 'en-US', 'zh-Hans-CN', 'id-ID' or None for auto-detect (restricted to those three).
     Returns (text, speech_code_used_or_None, error_or_None). Never raises.
     """
     try:
