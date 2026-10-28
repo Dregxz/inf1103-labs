@@ -3,7 +3,7 @@ class Inventory:
         self.__products = []
 
     def add_product(self, product):
-        if self.search.product(product.get_product_id()) is not None:
+        if self.search_product(product.get_product_id()) is not None:
             return False
         self.__products.append(product)
         return True
