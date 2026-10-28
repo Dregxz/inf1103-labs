@@ -19,7 +19,7 @@ class Inventory:
             print("No products in inventory.")
             return
         for product in self.__products:
-            product.display_product()
+            product.display_information()
 
     def get_all_products(self):
         return list(self.__products)
