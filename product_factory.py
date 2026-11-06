@@ -17,7 +17,5 @@ _BUILDERS = {
 
 
 def create_product(product_id, details):
-    """Build the correct Product subclass from saved JSON data.
-    Raises KeyError / ValueError / TypeError if the data is invalid."""
     builder = _BUILDERS[details["Type"]]
     return builder(product_id, details)

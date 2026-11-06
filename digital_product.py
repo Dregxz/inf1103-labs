@@ -18,3 +18,6 @@ class DigitalProduct(Product):
         data["Type"] = "Digital"
         data["Download Size"] = self.__download_size
         return data
+
+    def get_fulfilment_info(self):
+        return "Digital product: delivered digitally via download link."

@@ -1,5 +1,4 @@
 import json
-from product import Product
 from inventory import Inventory
 from physical_product import PhysicalProduct
 from digital_product import DigitalProduct
@@ -25,9 +24,8 @@ def load_inventory(inventory):
         for product_id, details in data.items():
             try:
                 product = create_product(product_id, details)
-                inventory.add_product(product)
-            except (KeyError, ValueError, TypeError):
-                print(f"Skipped invalid entry: {product_id!r}")
+            except (KeyError, ValueError, TypeError) as error:
+                print(f"Skipped invalid entry: {product_id!r} -> {error!r}")
     except (FileNotFoundError, json.JSONDecodeError):
         print("No valid inventory file found. Starting with an empty inventory.")
 
@@ -69,7 +67,7 @@ def add_product_menu(inventory):
     if stock is None:
         print("Rejected! Stock must be a whole number.")
         return
-    
+
     print("\nProduct type:")
     print("1. Physical product")
     print("2. Digital product")
@@ -95,6 +93,7 @@ def add_product_menu(inventory):
         print("\nProduct added Successfully!")
     else:
         print("Rejected! That Product ID already exists.")
+
 
 def update_stock_menu(inventory):
     print("Update Product\n")
