@@ -8,5 +8,10 @@
         "Name": "Keyboard",
         "Price": 30.0,
         "Stock": 10
+    },
+    "P004": {
+        "Name": "Mouse",
+        "Price": 12.0,
+        "Stock": 100
     }
 }
