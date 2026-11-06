@@ -24,8 +24,9 @@ def load_inventory(inventory):
         for product_id, details in data.items():
             try:
                 product = create_product(product_id, details)
-            except (KeyError, ValueError, TypeError) as error:
-                print(f"Skipped invalid entry: {product_id!r} -> {error!r}")
+                inventory.add_product(product)
+            except (KeyError, ValueError, TypeError):
+                print(f"Skipped invalid entry: {product_id!r}")
     except (FileNotFoundError, json.JSONDecodeError):
         print("No valid inventory file found. Starting with an empty inventory.")
 

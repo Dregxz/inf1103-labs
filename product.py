@@ -32,14 +32,14 @@ class Product(ABC):
               f"Price: ${self.__price:.2f} | Stock: {self.__stock}")
 
     def to_dict(self):
+        """Common data every product saves. Subclasses extend this."""
         return {
-            "Product_ID": self.__product_id,
             "Name": self.__name,
             "Price": self.__price,
-            "Stock": self.__stock
+            "Stock": self.__stock,
         }
-     
-    @abstractmethod                       
+
+    @abstractmethod
     def get_fulfilment_info(self):
         """Each product type must say how it is fulfilled."""
         pass

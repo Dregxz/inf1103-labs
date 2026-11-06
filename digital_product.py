@@ -11,7 +11,7 @@ class DigitalProduct(Product):
 
     def display_information(self):
         super().display_information()
-        print(f"    Download size: {self.__download_size:.2f} MB")
+        print(f"Download size: {self.__download_size:.2f} MB")
 
     def to_dict(self):
         data = super().to_dict()
