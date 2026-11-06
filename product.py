@@ -1,4 +1,7 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class Product(ABC):
 
     def __init__(self, product_id, name, price, stock):
         self.__product_id = product_id
@@ -27,3 +30,8 @@ class Product:
     def display_information(self):
         print(f"ID: {self.__product_id} | Name: {self.__name} | "
               f"Price: ${self.__price:.2f} | Stock: {self.__stock}")
+        
+    @abstractmethod                       
+    def get_fulfilment_info(self):
+        """Each product type must say how it is fulfilled."""
+        pass
