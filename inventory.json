@@ -1,27 +1,12 @@
 {
     "P001": {
         "Name": "Laptop",
-        "Price": 1200.0,
-        "Stock": 100
-    },
-    "P002": {
-        "Name": "Mouse",
-        "Price": 25.5,
-        "Stock": 50
+        "Price": 3000.0,
+        "Stock": 10
     },
     "P003": {
         "Name": "Keyboard",
-        "Price": 45.0,
+        "Price": 30.0,
         "Stock": 10
-    },
-    "P004": {
-        "Name": "Monitor",
-        "Price": 299.99,
-        "Stock": 10
-    },
-    "P005": {
-        "Name": "Smart Watch",
-        "Price": 200.0,
-        "Stock": 20
     }
 }
