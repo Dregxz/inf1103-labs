@@ -18,3 +18,9 @@ class PhysicalProduct(Product, CanBeShipped):
 
     def calculate_shipping_cost(self):
         return self.BASE_SHIPPING_COST + self.Rate_PER_KG * self.__weight
+
+    def to_dict(self):
+        data = super().to_dict()
+        data["Type"] = "Physical"
+        data["Weight"] = self.__weight
+        return data

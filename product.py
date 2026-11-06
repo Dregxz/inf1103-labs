@@ -30,7 +30,15 @@ class Product(ABC):
     def display_information(self):
         print(f"ID: {self.__product_id} | Name: {self.__name} | "
               f"Price: ${self.__price:.2f} | Stock: {self.__stock}")
-        
+
+    def to_dict(self):
+        return {
+            "Product_ID": self.__product_id,
+            "Name": self.__name,
+            "Price": self.__price,
+            "Stock": self.__stock
+        }
+     
     @abstractmethod                       
     def get_fulfilment_info(self):
         """Each product type must say how it is fulfilled."""

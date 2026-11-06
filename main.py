@@ -1,6 +1,10 @@
 import json
 from product import Product
 from inventory import Inventory
+from physical_product import PhysicalProduct
+from digital_product import DigitalProduct
+from can_be_shipped import CanBeShipped
+from product_factory import create_product
 
 FILENAME = "inventory.json"
 
@@ -20,8 +24,7 @@ def load_inventory(inventory):
         print(f"{FILENAME} found.")
         for product_id, details in data.items():
             try:
-                product = Product(product_id, details["Name"],
-                                  details["Price"], details["Stock"])
+                product = create_product(product_id, details)
                 inventory.add_product(product)
             except (KeyError, ValueError, TypeError):
                 print(f"Skipped invalid entry: {product_id!r}")
@@ -32,11 +35,7 @@ def load_inventory(inventory):
 def save_inventory(inventory):
     data = {}
     for product in inventory.get_all_products():
-        data[product.get_product_id()] = {
-            "Name": product.get_name(),
-            "Price": product.get_price(),
-            "Stock": product.get_stock(),
-        }
+        data[product.get_product_id()] = product.to_dict()
     data = dict(sorted(data.items()))
     with open(FILENAME, "w") as file:
         json.dump(data, file, indent=4)
@@ -70,13 +69,32 @@ def add_product_menu(inventory):
     if stock is None:
         print("Rejected! Stock must be a whole number.")
         return
+    
+    print("\nProduct type:")
+    print("1. Physical product")
+    print("2. Digital product")
+    product_type = input("Choose type (1-2): ").strip()
 
-    product = Product(product_id, name, price, stock)
+    if product_type == "1":
+        weight = ask_float("Weight (kg): ")
+        if weight is None:
+            print("Rejected! Weight must be a non-negative number.")
+            return
+        product = PhysicalProduct(product_id, name, price, stock, weight)
+    elif product_type == "2":
+        download_size = ask_float("Download size (MB): ")
+        if download_size is None:
+            print("Rejected! Download size must be a non-negative number.")
+            return
+        product = DigitalProduct(product_id, name, price, stock, download_size)
+    else:
+        print("Rejected! Product type must be 1 or 2.")
+        return
+
     if inventory.add_product(product):
         print("\nProduct added Successfully!")
     else:
         print("Rejected! That Product ID already exists.")
-
 
 def update_stock_menu(inventory):
     print("Update Product\n")
@@ -101,6 +119,9 @@ def search_product_menu(inventory):
         print("Product Found")
         print_line1()
         product.display_information()
+        print(f"    {product.get_fulfilment_info()}")
+        if isinstance(product, CanBeShipped):
+            print(f"    Shipping cost: ${product.calculate_shipping_cost():.2f}")
         print_line1()
 
 
