@@ -1,27 +1,41 @@
 import json
-from product import Product
+from typing import Optional
 from inventory import Inventory
+from supplier import Supplier
+from can_be_shipped import CanBeShipped
+from product_factory import ProductFactory
 
 FILENAME = "inventory.json"
 
 
-def print_line1():
+def print_line1() -> None:
     print("----------------------------------")
 
 
-def print_line2():
+def print_line2() -> None:
     print("=======================================")
 
 
-def load_inventory(inventory):
+def load_inventory(inventory: Inventory, supplier: Optional[Supplier] = None) -> None:
     try:
         with open(FILENAME, "r") as file:
             data = json.load(file)
         print(f"{FILENAME} found.")
         for product_id, details in data.items():
             try:
-                product = Product(product_id, details["Name"],
-                                  details["Price"], details["Stock"])
+                product_type = details.get("Type", "physical")
+                product = ProductFactory.create(
+                    product_type=product_type,
+                    product_id=product_id,
+                    name=details["Name"],
+                    price=float(details["Price"]),
+                    stock_quantity=int(details["Stock"]),
+                    supplier=supplier,
+                    weight=float(details.get("Weight", 0.0)),
+                    download_size=float(
+                        details.get("Download Size", details.get("Download_Size", 0.0))
+                    ),
+                )
                 inventory.add_product(product)
             except (KeyError, ValueError, TypeError):
                 print(f"Skipped invalid entry: {product_id!r}")
@@ -29,20 +43,16 @@ def load_inventory(inventory):
         print("No valid inventory file found. Starting with an empty inventory.")
 
 
-def save_inventory(inventory):
+def save_inventory(inventory: Inventory) -> None:
     data = {}
     for product in inventory.get_all_products():
-        data[product.get_product_id()] = {
-            "Name": product.get_name(),
-            "Price": product.get_price(),
-            "Stock": product.get_stock(),
-        }
+        data[product.get_product_id()] = product.to_dict()
     data = dict(sorted(data.items()))
     with open(FILENAME, "w") as file:
         json.dump(data, file, indent=4)
 
 
-def ask_float(prompt):
+def ask_float(prompt: str) -> Optional[float]:
     try:
         value = float(input(prompt))
         return value if value >= 0 else None
@@ -50,12 +60,12 @@ def ask_float(prompt):
         return None
 
 
-def ask_int(prompt):
+def ask_int(prompt: str) -> Optional[int]:
     value = input(prompt)
     return int(value) if value.isdigit() else None
 
 
-def add_product_menu(inventory):
+def add_product_menu(inventory: Inventory, supplier: Optional[Supplier] = None) -> None:
     print("Add New Product\n")
     product_id = input("Product ID: ").strip()
     name = input("Product Name: ").strip()
@@ -71,14 +81,53 @@ def add_product_menu(inventory):
         print("Rejected! Stock must be a whole number.")
         return
 
-    product = Product(product_id, name, price, stock)
+    print("\nProduct type:")
+    print("1. Physical product")
+    print("2. Digital product")
+    choice = input("Choose type (1-2): ").strip()
+
+    weight = 0.0
+    download_size = 0.0
+    if choice == "1":
+        product_type = "physical"
+        w = ask_float("Weight (kg): ")
+        if w is None:
+            print("Rejected! Weight must be a non-negative number.")
+            return
+        weight = w
+    elif choice == "2":
+        product_type = "digital"
+        ds = ask_float("Download size (MB): ")
+        if ds is None:
+            print("Rejected! Download size must be a non-negative number.")
+            return
+        download_size = ds
+    else:
+        print("Rejected! Product type must be 1 or 2.")
+        return
+
+    try:
+        product = ProductFactory.create(
+            product_type=product_type,
+            product_id=product_id,
+            name=name,
+            price=price,
+            stock_quantity=stock,
+            supplier=supplier,
+            weight=weight,
+            download_size=download_size,
+        )
+    except ValueError as exc:
+        print(f"Rejected! {exc}")
+        return
+
     if inventory.add_product(product):
         print("\nProduct added Successfully!")
     else:
         print("Rejected! That Product ID already exists.")
 
 
-def update_stock_menu(inventory):
+def update_stock_menu(inventory: Inventory) -> None:
     print("Update Product\n")
     product = inventory.search_product(input("Enter Product ID: ").strip())
     if product is None:
@@ -93,7 +142,7 @@ def update_stock_menu(inventory):
         print("Rejected! Stock must be a whole number.")
 
 
-def search_product_menu(inventory):
+def search_product_menu(inventory: Inventory) -> None:
     product = inventory.search_product(input("Enter Product ID: ").strip())
     if product is None:
         print("Product not Found")
@@ -101,10 +150,13 @@ def search_product_menu(inventory):
         print("Product Found")
         print_line1()
         product.display_information()
+        print(f"    {product.get_fulfilment_info()}")
+        if isinstance(product, CanBeShipped):
+            print(f"    Shipping cost: ${product.calculate_shipping_cost():.2f}")
         print_line1()
 
 
-def print_menu():
+def print_menu() -> None:
     print("--------MENU--------")
     print("1. Display All Products")
     print("2. Add product")
@@ -115,13 +167,14 @@ def print_menu():
     print("---------------------")
 
 
-def main():
+def main() -> None:
     print_line2()
     print("INVENTORY MANAGEMENT SYSTEM")
     print_line2()
 
+    default_supplier = Supplier("SUP001", "Default Supplier", "supply@example.com")
     inventory = Inventory()
-    load_inventory(inventory)
+    load_inventory(inventory, default_supplier)
     print("Inventory loaded successfully.\n")
     print_menu()
 
@@ -135,7 +188,7 @@ def main():
             inventory.display_all()
             print_line1()
         elif option == "2":
-            add_product_menu(inventory)
+            add_product_menu(inventory, default_supplier)
         elif option == "3":
             update_stock_menu(inventory)
         elif option == "4":

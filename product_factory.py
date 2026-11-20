@@ -1,21 +1,37 @@
+from typing import Optional
+from product import Product
 from physical_product import PhysicalProduct
 from digital_product import DigitalProduct
+from supplier import Supplier
 
 
-def _make_physical(product_id, d):
-    return PhysicalProduct(product_id, d["Name"], d["Price"], d["Stock"], d["Weight"])
+class ProductFactory:
+    """Centralises creation of concrete Product subclasses."""
 
-
-def _make_digital(product_id, d):
-    return DigitalProduct(product_id, d["Name"], d["Price"], d["Stock"], d["Download_Size"])
-
-
-_BUILDERS = {
-    "physical": _make_physical,
-    "digital": _make_digital,
-}
-
-
-def create_product(product_id, details):
-    builder = _BUILDERS[details["Type"]]
-    return builder(product_id, details)
+    @staticmethod
+    def create(
+        product_type: str,
+        product_id: str,
+        name: str,
+        price: float,
+        stock_quantity: int,
+        supplier: Optional[Supplier] = None,
+        weight: float = 0.0,
+        download_size: float = 0.0,
+    ) -> Product:
+        normalized = product_type.strip().lower()
+        if normalized == "physical":
+            return PhysicalProduct(
+                product_id, name, price, stock_quantity, supplier, weight=weight
+            )
+        elif normalized == "digital":
+            return DigitalProduct(
+                product_id,
+                name,
+                price,
+                stock_quantity,
+                supplier,
+                download_size=download_size,
+            )
+        else:
+            raise ValueError(f"Unknown product type: {product_type}")
