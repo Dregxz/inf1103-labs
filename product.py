@@ -14,10 +14,17 @@ class Product(ABC):
         stock: int,
         supplier: Optional[Supplier] = None,
     ) -> None:
+        price_val = float(price)
+        if price_val <= 0:
+            raise ValueError("Price must be greater than zero.")
+        stock_val = int(stock)
+        if stock_val < 0:
+            raise ValueError("Stock quantity cannot be negative.")
+
         self.__product_id: str = product_id
         self.__name: str = name
-        self.__price: float = float(price)
-        self.__stock: int = int(stock)
+        self.__price: float = price_val
+        self.__stock: int = stock_val
         self.__supplier: Optional[Supplier] = supplier
 
     def get_product_id(self) -> str:
@@ -36,10 +43,10 @@ class Product(ABC):
         return self.__supplier
 
     def update_stock(self, quantity: int) -> bool:
-        if isinstance(quantity, int) and quantity >= 0:
-            self.__stock = quantity
-            return True
-        return False
+        if isinstance(quantity, bool) or not isinstance(quantity, int) or quantity < 0:
+            raise ValueError("Stock quantity cannot be negative.")
+        self.__stock = quantity
+        return True
 
     def display_information(self) -> None:
         supplier_info = f" | Supplier: {self.__supplier.get_name()}" if self.__supplier else ""

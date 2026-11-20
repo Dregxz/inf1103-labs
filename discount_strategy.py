@@ -20,7 +20,10 @@ class PercentageDiscount(DiscountStrategy):
     """Applies a percentage discount to the order total."""
 
     def __init__(self, percentage: float) -> None:
-        self.__percentage: float = float(percentage)
+        pct = float(percentage)
+        if pct < 0 or pct > 100:
+            raise ValueError("Discount percentage must be between 0 and 100.")
+        self.__percentage: float = pct
 
     def get_percentage(self) -> float:
         return self.__percentage
@@ -33,8 +36,12 @@ class BulkDiscount(DiscountStrategy):
     """Subtracts a fixed amount when the order total meets or exceeds a threshold."""
 
     def __init__(self, threshold: float, amount: float) -> None:
-        self.__threshold: float = float(threshold)
-        self.__amount: float = float(amount)
+        threshold_val = float(threshold)
+        amount_val = float(amount)
+        if threshold_val < 0 or amount_val < 0:
+            raise ValueError("Bulk discount threshold and amount cannot be negative.")
+        self.__threshold: float = threshold_val
+        self.__amount: float = amount_val
 
     def get_threshold(self) -> float:
         return self.__threshold
